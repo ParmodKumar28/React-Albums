@@ -11,6 +11,7 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   transition: transform 0.2s ease-in-out;
+  position: relative;
 }
 
 .albumContainer:hover {
@@ -45,6 +46,20 @@
   font-weight: bold;
   color: #333;
   padding: 10px 0;
+}
+
+.iconContainer{
+  position: absolute;
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+  top: -18px;
+  right: 10px;
+}
+
+.icon{
+  height: 2rem;
+  margin-right: 1rem;
 }
 
 @media(max-width: 600px){
