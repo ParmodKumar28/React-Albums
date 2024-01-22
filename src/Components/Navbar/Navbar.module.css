@@ -6,9 +6,24 @@
     background-color: rgb(78, 108, 245);
 }
 
+.logo{
+    display: flex;
+    align-items: center;
+}
+
+.logoImage{
+    height: 3.5rem;
+}
+
 .item{
     color: white;
     font-size: xx-large;
     margin-left: 2rem;
     font-weight: 700;
+}
+
+@media(max-width: 600px){
+    .item{
+        font-size: 1.2rem;
+    }
 }

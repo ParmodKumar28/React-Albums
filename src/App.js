@@ -3,9 +3,11 @@
 import Navbar from "./Components/Navbar/Navbar";
 import AlbumsList from "./Components/Albums List/Albums-List";
 import { useEffect, useState } from "react";
+import Loader from "./Components/Loader/loader.jsx";
 
 function App() {
   // States
+  const [loading, setLoading] = useState(true);
   const [albums, setAlbums] = useState([]);
 
   // Side effects
@@ -18,14 +20,17 @@ function App() {
       const albums = await response.json();
       // Setting state
       setAlbums(albums);
+      setLoading(false);
     };
-  }, []);
 
+    // Call
+    fetchData();
+  }, []);
 
   return (
     <>
       <Navbar />
-      <AlbumsList />
+      {loading ? <Loader /> : <AlbumsList albums={albums} />}
     </>
   );
 }
