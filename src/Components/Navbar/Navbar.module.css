@@ -1,0 +1,14 @@
+.navbarContainer{
+    margin-bottom: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: rgb(78, 108, 245);
+}
+
+.item{
+    color: white;
+    font-size: xx-large;
+    margin-left: 2rem;
+    font-weight: 700;
+}
