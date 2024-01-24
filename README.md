@@ -38,6 +38,10 @@ The application makes dummy requests to the JSONPlaceholder API, so no actual mo
 
 https://react-albums.onrender.com
 
+## Youtube Video:
+
+https://youtu.be/ZqRKiNfgQLs
+
 ## Demo Video:
 
 https://github.com/ParmodKumar28/React-Albums/assets/91540271/441de2f8-168b-4c99-9b61-6119c8a8beba
