@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styles from "./Album.module.css";
 
 // Component Here
-export default function Album({ id, userId, title }) {
+export default function Album({ id, userId, title, deleteAlbum }) {
   const [visible, setVisible] = useState(false);
 
   // Returning JSX
@@ -22,7 +22,7 @@ export default function Album({ id, userId, title }) {
 
       {/* Delete update icon container */}
       {visible && <div className={styles.iconContainer}>
-        <img src="https://cdn-icons-png.flaticon.com/128/6460/6460112.png" alt="delete" className={styles.icon} />
+        <img src="https://cdn-icons-png.flaticon.com/128/6460/6460112.png" alt="delete" className={styles.icon} onClick={() => deleteAlbum(id)}/>
         <img src="https://cdn-icons-png.flaticon.com/128/12493/12493756.png" alt="update" className={styles.icon} />
       </div>}
     </div>
