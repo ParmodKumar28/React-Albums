@@ -102,48 +102,54 @@ function App() {
   const updateAlbum = async ({ id, userId, title }) => {
     setUpdate(true);
     setFormVisible(true);
-    console.log(id);
     setAlbumToUpdateData({ id, userId, title });
   };
 
   // Updating the album here
-  const updateAlbumData = async () => {
+  const updateAlbumData = async ({ userId, albumName }) => {
     try {
       const response = await fetch(
         `https://jsonplaceholder.typicode.com/albums/${albumToUpdateData.id}`,
         {
           method: "PUT",
-          body: JSON.stringify(updateAlbumData),
+          body: JSON.stringify({
+            id: albumToUpdateData.id,
+            userId: userId,
+            title: albumName,
+          }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
         }
       );
 
+      const updatedAlbum = await response.json();
+
       if (response.ok) {
         // Show success notification
         toast.success("Album Updated Successfully!");
-        setAlbums(albums.map((album) => {
-          if(album.id === albumToUpdateData.id)
-          {
-            return albumToUpdateData;
-          }
-          else
-          {
-            return album;
-          }
-        }));
+        // Setting state with the updated album.
+        setAlbums(
+          albums.map((album) => {
+            if (album.id === albumToUpdateData.id) {
+              return updatedAlbum;
+            } else {
+              return album;
+            }
+          })
+        );
         // Close the form
         formToggle();
-    } else {
+      } else {
         toast.error("Error Updating Album");
-    }
+      }
     } catch (error) {
       toast.error("Error Updating Album");
       console.log(error);
     }
   };
 
+  // Returning JSX
   return (
     <>
       {/* Notification Component */}
