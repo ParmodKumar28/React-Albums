@@ -1,5 +1,6 @@
+/* Albums List Styles */
 .albumContainer{
-    margin: 2rem auto;
+    margin: 6rem auto;
     width: 70%;
     display: flex;
     flex-wrap: wrap;

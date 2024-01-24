@@ -1,10 +1,16 @@
+/* Navbar Styles */
 .navbarContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     margin-bottom: 1rem;
-    padding: 1rem;
+    padding: 0.8rem;
     display: flex;
     align-items: center;
     background-color: rgb(78, 108, 245);
     user-select: none;
+    z-index: 1000;
 }
 
 .logo{

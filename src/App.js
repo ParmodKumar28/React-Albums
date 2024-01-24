@@ -14,6 +14,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [albums, setAlbums] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
+  const [albumToUpdateData, setAlbumToUpdateData] = useState({});
+  const [update, setUpdate] = useState(false);
 
   // Side effects
   useEffect(() => {
@@ -32,14 +34,18 @@ function App() {
     fetchData();
   }, []);
 
-  // Handle add album button here to show form.
+  // Handle to show form here.
   const formToggle = () => {
     setFormVisible(!formVisible);
+    if (update) {
+      setUpdate(false);
+    }
   };
 
   // Add new album function here.
   const addAlbum = async (userId, albumName) => {
     try {
+      // Passing the POST request to add new album
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/albums",
         {
@@ -54,12 +60,14 @@ function App() {
           },
         }
       );
-
       const album = await response.json();
       // Adding to state here new album after getting the response.
       setAlbums([album, ...albums]);
+      // Showing notifications
       toast.success("New Albums Added Successfully :)");
+      formToggle();
     } catch (error) {
+      toast.error("Error Adding Album!");
       console.log(error);
     }
   };
@@ -67,12 +75,14 @@ function App() {
   // Delete album
   const deleteAlbum = async (id) => {
     try {
+      // Passing DELETE Request to delete the album
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/albums/id",
+        `https://jsonplaceholder.typicode.com/albums/${id}`,
         {
           method: "DELETE",
         }
       );
+      // If response is ok then showing notification and updating state
       if (response.ok) {
         // Showing notification
         toast.success("Album Deleted Successfully!");
@@ -88,16 +98,75 @@ function App() {
     }
   };
 
+  // Update album Show form and data
+  const updateAlbum = async ({ id, userId, title }) => {
+    setUpdate(true);
+    setFormVisible(true);
+    console.log(id);
+    setAlbumToUpdateData({ id, userId, title });
+  };
+
+  // Updating the album here
+  const updateAlbumData = async () => {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/albums/${albumToUpdateData.id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(updateAlbumData),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+
+      if (response.ok) {
+        // Show success notification
+        toast.success("Album Updated Successfully!");
+        setAlbums(albums.map((album) => {
+          if(album.id === albumToUpdateData.id)
+          {
+            return albumToUpdateData;
+          }
+          else
+          {
+            return album;
+          }
+        }));
+        // Close the form
+        formToggle();
+    } else {
+        toast.error("Error Updating Album");
+    }
+    } catch (error) {
+      toast.error("Error Updating Album");
+      console.log(error);
+    }
+  };
+
   return (
     <>
+      {/* Notification Component */}
       <ToastContainer />
       <Navbar formToggle={formToggle} />
       {/* Showing form conditionally */}
-      {formVisible && <Form formToggle={formToggle} addAlbum={addAlbum} />}
+      {formVisible && (
+        <Form
+          formToggle={formToggle}
+          addAlbum={addAlbum}
+          update={update}
+          albumToUpdateData={albumToUpdateData}
+          updateAlbumData={updateAlbumData}
+        />
+      )}
       {loading ? (
         <Loader />
       ) : (
-        <AlbumsList albums={albums} deleteAlbum={deleteAlbum} />
+        <AlbumsList
+          albums={albums}
+          deleteAlbum={deleteAlbum}
+          updateAlbum={updateAlbum}
+        />
       )}
     </>
   );
