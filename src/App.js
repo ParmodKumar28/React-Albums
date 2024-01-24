@@ -108,36 +108,54 @@ function App() {
   // Updating the album here
   const updateAlbumData = async ({ userId, albumName }) => {
     try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/albums/${albumToUpdateData.id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            id: albumToUpdateData.id,
-            userId: userId,
-            title: albumName,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-
-      const updatedAlbum = await response.json();
-
-      if (response.ok) {
-        // Show success notification
-        toast.success("Album Updated Successfully!");
-        // Setting state with the updated album.
-        setAlbums(
-          albums.map((album) => {
-            if (album.id === albumToUpdateData.id) {
-              return updatedAlbum;
-            } else {
-              return album;
-            }
-          })
+      if (albumToUpdateData.id <= 100) {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/albums/${albumToUpdateData.id}`,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              id: albumToUpdateData.id,
+              userId: userId,
+              title: albumName,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
         );
+
+        const updatedAlbum = await response.json();
+        if (response.ok) {
+          // Show success notification
+          toast.success("Album Updated Successfully!");
+          // Setting state with the updated album.
+          setAlbums(
+            albums.map((album) => {
+              if (album.id === albumToUpdateData.id) {
+                return updatedAlbum;
+              } else {
+                return album;
+              }
+            })
+          );
+        } else {
+          // Setting state with the updated album.
+          setAlbums(
+            albums.map((album) => {
+              if (album.id === albumToUpdateData.id) {
+                return {
+                  id: albumToUpdateData.id,
+                  userId: userId,
+                  title: albumName,
+                };
+              } else {
+                return album;
+              }
+            })
+          );
+          // Show success notification
+          toast.success("Album Updated Successfully!");
+        }
         // Close the form
         formToggle();
       } else {
