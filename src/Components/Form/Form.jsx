@@ -16,7 +16,7 @@ export default function Form({ formToggle, addAlbum, albumToUpdateData, update, 
         // Calling here
         if (userId > 0 && albumName !== "") {
             if (update) {
-                updateAlbumData({ userId, albumName });
+                updateAlbumData({ id: albumToUpdateData.id, userId, albumName });
             }
             else {
                 addAlbum(userId, albumName);

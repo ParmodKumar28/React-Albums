@@ -5,6 +5,7 @@ import AlbumsList from "./Components/Albums List/Albums-List";
 import { useEffect, useState } from "react";
 import Loader from "./Components/Loader/loader.jsx";
 import Form from "./Components/Form/Form.jsx";
+import { v4 as uuidv4 } from "uuid";
 // Toastify notifications
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,6 +46,9 @@ function App() {
   // Add new album function here.
   const addAlbum = async (userId, albumName) => {
     try {
+      // Generate a unique ID using uuid
+      const uniqueId = uuidv4();
+
       // Passing the POST request to add new album
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/albums",
@@ -52,7 +56,7 @@ function App() {
           method: "POST",
           body: JSON.stringify({
             userId: userId,
-            id: albums.length + 1,
+            id: uniqueId,
             title: albumName,
           }),
           headers: {
@@ -61,6 +65,7 @@ function App() {
         }
       );
       const album = await response.json();
+      album.id = uniqueId;
       // Adding to state here new album after getting the response.
       setAlbums([album, ...albums]);
       // Showing notifications
@@ -106,15 +111,15 @@ function App() {
   };
 
   // Updating the album here
-  const updateAlbumData = async ({ userId, albumName }) => {
+  const updateAlbumData = async ({ id, userId, albumName }) => {
     try {
-      if (albumToUpdateData.id <= 100) {
+      if (id <= 100) {
         const response = await fetch(
-          `https://jsonplaceholder.typicode.com/albums/${albumToUpdateData.id}`,
+          `https://jsonplaceholder.typicode.com/albums/${id}`,
           {
             method: "PUT",
             body: JSON.stringify({
-              id: albumToUpdateData.id,
+              id: id,
               userId: userId,
               title: albumName,
             }),
@@ -125,41 +130,35 @@ function App() {
         );
 
         const updatedAlbum = await response.json();
-        if (response.ok) {
-          // Show success notification
-          toast.success("Album Updated Successfully!");
-          // Setting state with the updated album.
-          setAlbums(
-            albums.map((album) => {
-              if (album.id === albumToUpdateData.id) {
-                return updatedAlbum;
-              } else {
-                return album;
-              }
-            })
-          );
-        } else {
-          // Setting state with the updated album.
-          setAlbums(
-            albums.map((album) => {
-              if (album.id === albumToUpdateData.id) {
-                return {
-                  id: albumToUpdateData.id,
-                  userId: userId,
-                  title: albumName,
-                };
-              } else {
-                return album;
-              }
-            })
-          );
-          // Show success notification
-          toast.success("Album Updated Successfully!");
-        }
+        setAlbums(
+          albums.map((album) => {
+            if (album.id === id) {
+              return updatedAlbum;
+            } else {
+              return album;
+            }
+          })
+        );
+        toast.success("Album Updated Successfully!");
         // Close the form
         formToggle();
       } else {
-        toast.error("Error Updating Album");
+        setAlbums(
+          albums.map((album) => {
+            if (album.id === id) {
+              return {
+                id: id,
+                userId: userId,
+                title: albumName,
+              };
+            } else {
+              return album;
+            }
+          })
+        );
+        toast.success("Album Updated Successfully!");
+        // Close the form
+        formToggle();
       }
     } catch (error) {
       toast.error("Error Updating Album");
