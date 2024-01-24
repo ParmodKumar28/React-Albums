@@ -57,7 +57,7 @@ function App() {
 
       const album = await response.json();
       // Adding to state here new album after getting the response.
-      setAlbums([...albums, album]);
+      setAlbums([album, ...albums]);
       toast.success("New Albums Added Successfully :)");
     } catch (error) {
       console.log(error);

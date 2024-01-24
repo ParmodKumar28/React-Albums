@@ -4,6 +4,7 @@
     display: flex;
     align-items: center;
     background-color: rgb(78, 108, 245);
+    user-select: none;
 }
 
 .logo{
@@ -20,6 +21,10 @@
     font-size: xx-large;
     margin-left: 2rem;
     font-weight: 700;
+}
+
+.item:hover{
+    color: black;
 }
 
 @media(max-width: 600px){

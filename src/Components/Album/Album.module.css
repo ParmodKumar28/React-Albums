@@ -62,6 +62,10 @@
   margin-right: 1rem;
 }
 
+.icon:hover{
+  transform: scale(120%);
+}
+
 @media(max-width: 600px){
   .albumContainer{
     width: 160px;
